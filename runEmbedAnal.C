@@ -12,8 +12,8 @@
 
 void loadLibraries(){
   cout << "\n";
-  gROOT->Macro("/star/u/klandry/gpfs01/2012Embed/code/LoadLibs.C");
-  //gROOT->Macro("/global/homes/k/klandry/2012Embed/code/LoadLibs.C");
+  //gROOT->Macro("/star/u/klandry/gpfs01/2012Embed/code/LoadLibs.C");
+  gROOT->Macro("/global/homes/k/klandry/2012Embed/code/LoadLibs.C");
   gSystem->Load("StEEmcA2EMaker");
   gSystem->Load("embedAnalMaker");
   cout << " loading of embedAnalMaker library done" << endl;
@@ -38,18 +38,18 @@ string createOutputFileName(string muDstFileName){
   string replaceStr = "EmbedAnalysis";
   outFileName.replace(outFileName.find(searchStr2), searchStr2.length(), replaceStr);
 
-  //string path = "/global/homes/k/klandry/2012Embed/output/";
-  string path = "/star/u/klandry/gpfs01/2012Embed/output/";
+  string path = "/global/homes/k/klandry/2012Embed/outputfull/";
+  //string path = "/star/u/klandry/gpfs01/2012Embed/output/";
 
-  outFileName = path + outFileName;
+  //outFileName = path + outFileName;
   return outFileName;
   
 }
 
 //==============================================================================
-void runEmbedAnal(/*string muDstFileName*/){
+void runEmbedAnal(string muDstFileName){
   
-  string muDstFileName = "/star/u/klandry/gpfs01/2012Embed/rootFilesForTest/pt9_11_13044126_7.MuDst.root";
+  //string muDstFileName = "/star/u/klandry/gpfs01/2012Embed/rootFilesForTest/pt9_11_13044126_7.MuDst.root";
   //string muDstFileName = "/global/homes/k/klandry/2012Embed/rootFilesForTest/pt25_35_13049042_1.MuDst.root";
   loadLibraries();
   
@@ -60,6 +60,8 @@ void runEmbedAnal(/*string muDstFileName*/){
   assert(pythTree);
 
   string outFileName = createOutputFileName(muDstFileName);
+  //string outFileName = "test123.root";
+
   cout << "\noutput file: " << outFileName << endl;
   
   //SET UP CHAIN OF MAKERS

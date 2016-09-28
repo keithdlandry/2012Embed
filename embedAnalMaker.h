@@ -19,7 +19,6 @@
 #include "TParticle.h"
 
 #include "StMaker.h"
-
 //StMuDstMaker
 #include "StMuDSTMaker/COMMON/StMuDst.h"
 #include "StMuDSTMaker/COMMON/StMuEvent.h"
@@ -93,6 +92,7 @@ private:
   
   //bin information//
   double mBinWeight;
+  double mTrigWeight;
   double* mPtBinLiimits;
   double* mMBinLiimits;
   double* mEtaBinLiimits;
@@ -146,6 +146,31 @@ private:
   TH1D* mMatchedPdgCode_total;
   TH1D* mMatchedPdgCode_total_pyth;
   
+  //Histograms to hold average values of pt M and eta//
+  std::vector<std::vector<TH1D*> > mH_Pt_PtM;
+  std::vector<std::vector<TH1D*> > mH_Pt_PtEta;
+  std::vector<std::vector<TH1D*> > mH_Pt_MEta;
+  std::vector<std::vector<TH1D*> > mH_M_PtM;
+  std::vector<std::vector<TH1D*> > mH_M_PtEta;
+  std::vector<std::vector<TH1D*> > mH_M_MEta;
+  std::vector<std::vector<TH1D*> > mH_Eta_PtM;
+  std::vector<std::vector<TH1D*> > mH_Eta_PtEta;
+  std::vector<std::vector<TH1D*> > mH_Eta_MEta;
+  
+  std::vector<std::vector<TH1D*> > mH_Pt_PtM_pyth;
+  std::vector<std::vector<TH1D*> > mH_Pt_PtEta_pyth;
+  std::vector<std::vector<TH1D*> > mH_Pt_MEta_pyth;
+  std::vector<std::vector<TH1D*> > mH_M_PtM_pyth;
+  std::vector<std::vector<TH1D*> > mH_M_PtEta_pyth;
+  std::vector<std::vector<TH1D*> > mH_M_MEta_pyth;
+  std::vector<std::vector<TH1D*> > mH_Eta_PtM_pyth;
+  std::vector<std::vector<TH1D*> > mH_Eta_PtEta_pyth;
+  std::vector<std::vector<TH1D*> > mH_Eta_MEta_pyth;
+  
+  
+
+
+  
   
   //QA Histograms//
   TH1D* mH_PairPt;
@@ -156,6 +181,29 @@ private:
   TH1D* mH_PairPhi_pyth;
   TH1D* mH_PairEta_pyth;
   TH1D* mH_PairMass_pyth;
+  TH1D* mH_EtaPlus;
+  TH1D* mH_EtaMinus;
+  TH1D* mH_EtaJP0;
+  TH1D* mH_EtaJP1;
+  TH1D* mH_EtaJP2;
+  TH1D* mH_triggerCounts;
+  TH1D* mH_EtaBeforePair;
+  TH1D* mH_EtaBeforeTrig;
+  TH1D* mH_EtaNoCuts;
+  TH1D* mH_EtaNSigPiCut;
+  TH1D* mH_BinWeight;
+  TH1D* mH_PairPtJP0;
+  TH1D* mH_PairPtJP1;
+  TH1D* mH_PairPtJP2;
+  TH1D* mH_TrackPtJP0;
+  TH1D* mH_TrackPtJP1;
+  TH1D* mH_TrackPtJP2;
+  TH1D* mH_PairPtBHT0VPD;
+  TH1D* mH_PairPtBHT1VPD;
+  TH1D* mH_PairPtBHT2BBC;
+  TH1D* mH_PairPtBHT2;
+  
+  
   
   const TParticle* mParton1;
   const TParticle* mParton2;
@@ -191,13 +239,16 @@ public:
   void           moveSearchRange(int half, int& lowLimit, int& highLimit                );
   bool           lowestPossibleDivision(int lowLimit, int highLimit);
   
-  bool             checkForTriggers(StMuDst* muDst);
-  bool             checkTracksForPair(StMuTrack* track1, StMuTrack* track2);
-  bool             checkParticlesForPair(const TParticle* particle1, const TParticle* particle2);
-  int              findHighestRankingVertex(StMuDst* muDst);
-  StMuTrack*       findTrack(StMuDst* muDst, int trackId, int vertexId);
-  const TParticle* findPythParticle(StPythiaEvent* pythEvent,int particleId);
-  bool             usePythParticle(const TParticle* particle, int pdgCode);
+  bool                checkForTriggers();
+  int                 hiJPFired();
+  bool                didTrigFire(int trigID);
+  bool                checkTracksForPair(StMuTrack* track1, StMuTrack* track2);
+  bool                checkParticlesForPair(const TParticle* particle1, const TParticle* particle2);
+  int                 findHighestRankingVertex(StMuDst* muDst);
+  StMuTrack*          findTrack(StMuDst* muDst, int trackId, int vertexId);
+  bool                trackPassesCuts(StMuTrack* track);
+  const TParticle*    findPythParticle(StPythiaEvent* pythEvent,int particleId);
+  bool                usePythParticle(const TParticle* particle, int pdgCode);
 
   double         getRadius(StMuTrack* track1, StMuTrack* track2);
   double         getRadius(const TParticle* particle1, const TParticle* particle2);

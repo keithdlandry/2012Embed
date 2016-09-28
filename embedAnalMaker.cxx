@@ -72,6 +72,9 @@ void embedAnalMaker::fillAllHistograms(TLorentzVector sum, double fillVal, strin
   flags["X2"]             =  3;
   flags["Z"]              =  4;
   flags["matchedPdgCode"] =  5;
+  flags["Pt"]             =  6;
+  flags["Mass"]           =  7;
+  flags["Eta"]            =  8;
     
   switch (flags[fillType] + flags[level])
   {
@@ -86,19 +89,34 @@ void embedAnalMaker::fillAllHistograms(TLorentzVector sum, double fillVal, strin
       fillNMbin(mBinsMEta, mH_X1_MEta, sum.M(), sum.Eta(), fillVal);      
       break;
     case 13:
-      fillNMbin(mBinsPtM, mH_X2_PtM_pyth, sum.Pt(), sum.M(), fillVal);
-      fillNMbin(mBinsPtEta, mH_X2_PtEta_pyth, sum.Pt(), sum.Eta(), fillVal);
-      fillNMbin(mBinsMEta, mH_X2_MEta_pyth, sum.M(), sum.Eta(), fillVal);
+      fillNMbin(mBinsPtM, mH_X2_PtM, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_X2_PtEta, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_X2_MEta, sum.M(), sum.Eta(), fillVal);
       break;
     case 14:
-      fillNMbin(mBinsPtM, mH_Z_PtM_pyth, sum.Pt(), sum.M(), fillVal);
-      fillNMbin(mBinsPtEta, mH_Z_PtEta_pyth, sum.Pt(), sum.Eta(), fillVal);
-      fillNMbin(mBinsMEta, mH_Z_MEta_pyth, sum.M(), sum.Eta(), fillVal);
+      fillNMbin(mBinsPtM, mH_Z_PtM, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_Z_PtEta, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_Z_MEta, sum.M(), sum.Eta(), fillVal);
       break;      
     case 15:
       fillNMbin(mBinsPtM, mH_matchedPdgCode_PtM, sum.Pt(), sum.M(), fillVal);
       fillNMbin(mBinsPtEta, mH_matchedPdgCode_PtEta, sum.Pt(), sum.Eta(), fillVal);
       fillNMbin(mBinsMEta, mH_matchedPdgCode_MEta, sum.M(), sum.Eta(), fillVal);
+      break;
+    case 16:
+      fillNMbin(mBinsPtM, mH_Pt_PtM, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_Pt_PtEta, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_Pt_MEta, sum.M(), sum.Eta(), fillVal);      
+      break;
+    case 17:
+      fillNMbin(mBinsPtM, mH_M_PtM, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_M_PtEta, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_M_MEta, sum.M(), sum.Eta(), fillVal);      
+      break;
+    case 18:
+      fillNMbin(mBinsPtM, mH_Eta_PtM, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_Eta_PtEta, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_Eta_MEta, sum.M(), sum.Eta(), fillVal);      
       break;
       
     case 21:
@@ -126,6 +144,22 @@ void embedAnalMaker::fillAllHistograms(TLorentzVector sum, double fillVal, strin
       fillNMbin(mBinsPtEta, mH_matchedPdgCode_PtEta_pyth, sum.Pt(), sum.Eta(), fillVal);
       fillNMbin(mBinsMEta, mH_matchedPdgCode_MEta_pyth, sum.M(), sum.Eta(), fillVal);
       break;      
+    case 26:
+      fillNMbin(mBinsPtM, mH_Pt_PtM_pyth, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_Pt_PtEta_pyth, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_Pt_MEta_pyth, sum.M(), sum.Eta(), fillVal);      
+      break;
+    case 27:
+      fillNMbin(mBinsPtM, mH_M_PtM_pyth, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_M_PtEta_pyth, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_M_MEta_pyth, sum.M(), sum.Eta(), fillVal);      
+      break;
+    case 28:
+      fillNMbin(mBinsPtM, mH_Eta_PtM_pyth, sum.Pt(), sum.M(), fillVal);
+      fillNMbin(mBinsPtEta, mH_Eta_PtEta_pyth, sum.Pt(), sum.Eta(), fillVal);
+      fillNMbin(mBinsMEta, mH_Eta_MEta_pyth, sum.M(), sum.Eta(), fillVal);      
+      break;
+      
     default:
       cout << "filling histograms: flags not correct" << endl;
       break;
@@ -141,19 +175,19 @@ void embedAnalMaker::fillQAHistograms(TLorentzVector pairLV, string level){
   switch (flags[level])
   {
     case 1:
-      mH_PairPt->Fill(pairLV.Pt(),mBinWeight);
-      mH_PairEta->Fill(pairLV.Eta(),mBinWeight);
-      mH_PairPhi->Fill(pairLV.Phi(),mBinWeight);
-      mH_PairMass->Fill(pairLV.M(),mBinWeight);
+      mH_PairPt->Fill(pairLV.Pt(),mBinWeight*mTrigWeight);
+      mH_PairEta->Fill(pairLV.Eta(),mBinWeight*mTrigWeight);
+      mH_PairPhi->Fill(pairLV.Phi(),mBinWeight*mTrigWeight);
+      mH_PairMass->Fill(pairLV.M(),mBinWeight*mTrigWeight);
       break;
     case 2:
-      mH_PairPt_pyth->Fill(pairLV.Pt(),mBinWeight);
-      mH_PairEta_pyth->Fill(pairLV.Eta(),mBinWeight);
-      mH_PairPhi_pyth->Fill(pairLV.Phi(),mBinWeight);
-      mH_PairMass_pyth->Fill(pairLV.M(),mBinWeight);   
+      mH_PairPt_pyth->Fill(pairLV.Pt(),mBinWeight*mTrigWeight);
+      mH_PairEta_pyth->Fill(pairLV.Eta(),mBinWeight*mTrigWeight);
+      mH_PairPhi_pyth->Fill(pairLV.Phi(),mBinWeight*mTrigWeight);
+      mH_PairMass_pyth->Fill(pairLV.M(),mBinWeight*mTrigWeight);   
       break;
     default:
-      cout << "filling QA Histograms: flags not correct";
+      cout << "filling QA Histograms: flags not correct" << endl;
       break;
   }
 }
@@ -174,7 +208,16 @@ void embedAnalMaker::writeAllHistograms(){
   writeNMbins(mBinsPtEta, mH_Z_PtEta); 
   writeNMbins(mBinsPtM, mH_matchedPdgCode_PtM);
   writeNMbins(mBinsMEta, mH_matchedPdgCode_MEta);
-  writeNMbins(mBinsPtEta, mH_matchedPdgCode_PtEta);  
+  writeNMbins(mBinsPtEta, mH_matchedPdgCode_PtEta);
+  writeNMbins(mBinsPtM, mH_Pt_PtM);
+  writeNMbins(mBinsMEta, mH_Pt_MEta);
+  writeNMbins(mBinsPtEta, mH_Pt_PtEta);
+  writeNMbins(mBinsPtM, mH_M_PtM);
+  writeNMbins(mBinsMEta, mH_M_MEta);
+  writeNMbins(mBinsPtEta, mH_M_PtEta);
+  writeNMbins(mBinsPtM, mH_Eta_PtM);
+  writeNMbins(mBinsMEta, mH_Eta_MEta);
+  writeNMbins(mBinsPtEta, mH_Eta_PtEta);
   
   writeNMbins(mBinsPtM, mH_ProcIds_PtM_pyth);
   writeNMbins(mBinsMEta, mH_ProcIds_MEta_pyth);
@@ -190,7 +233,16 @@ void embedAnalMaker::writeAllHistograms(){
   writeNMbins(mBinsPtEta, mH_Z_PtEta_pyth);  
   writeNMbins(mBinsPtM, mH_matchedPdgCode_PtM_pyth);
   writeNMbins(mBinsMEta, mH_matchedPdgCode_MEta_pyth);
-  writeNMbins(mBinsPtEta, mH_matchedPdgCode_PtEta_pyth);  
+  writeNMbins(mBinsPtEta, mH_matchedPdgCode_PtEta_pyth);
+  writeNMbins(mBinsPtM, mH_Pt_PtM_pyth);
+  writeNMbins(mBinsMEta, mH_Pt_MEta_pyth);
+  writeNMbins(mBinsPtEta, mH_Pt_PtEta_pyth);
+  writeNMbins(mBinsPtM, mH_M_PtM_pyth);
+  writeNMbins(mBinsMEta, mH_M_MEta_pyth);
+  writeNMbins(mBinsPtEta, mH_M_PtEta_pyth);
+  writeNMbins(mBinsPtM, mH_Eta_PtM_pyth);
+  writeNMbins(mBinsMEta, mH_Eta_MEta_pyth);
+  writeNMbins(mBinsPtEta, mH_Eta_PtEta_pyth);
   
   mH_PairPt->Write();
   mH_PairPhi->Write();
@@ -201,6 +253,35 @@ void embedAnalMaker::writeAllHistograms(){
   mH_PairPhi_pyth->Write();
   mH_PairEta_pyth->Write();
   mH_PairMass_pyth->Write();
+  
+  mH_EtaPlus->Write();
+  mH_EtaMinus->Write();
+  mH_EtaJP0->Write();
+  mH_EtaJP1->Write();
+  mH_EtaJP2->Write();
+  mH_EtaBeforePair->Write();
+  mH_EtaBeforeTrig->Write();
+  mH_EtaNSigPiCut->Write();
+  mH_EtaNoCuts->Write();
+  
+  mH_triggerCounts->Write();
+  mH_BinWeight->Write();
+  
+  mH_PairPtJP0->Write();
+  mH_PairPtJP1->Write();
+  mH_PairPtJP2->Write();
+  
+  mH_TrackPtJP0->Write();
+  mH_TrackPtJP1->Write();
+  mH_TrackPtJP2->Write();
+  
+  mH_PairPtBHT0VPD->Write();
+  mH_PairPtBHT1VPD->Write();
+  mH_PairPtBHT2BBC->Write();
+  mH_PairPtBHT2->Write();
+  
+  
+  
 }
 
 void embedAnalMaker::initializeHistograms(){
@@ -221,6 +302,15 @@ void embedAnalMaker::initializeHistograms(){
   createNMbins(mBinsPtM, mH_matchedPdgCode_PtM, 2000, -999, 1001, "hMatchedPdgCode_PtMbin_");
   createNMbins(mBinsPtEta, mH_matchedPdgCode_PtEta, 2000, -999, 1001, "hMatchedPdgCode_PtEtabin_");
   createNMbins(mBinsMEta, mH_matchedPdgCode_MEta, 2000, -999, 1001, "hMatchedPdgCode_MEtabin_");  
+  createNMbins(mBinsPtM, mH_Pt_PtM, 500, 0, 50, "hPt_PtMbin_");
+  createNMbins(mBinsPtEta, mH_Pt_PtEta, 500, 0, 50, "hPt_PtEtabin_");
+  createNMbins(mBinsMEta, mH_Pt_MEta, 500, 0, 50, "hPt_MEtabin_");
+  createNMbins(mBinsPtM, mH_M_PtM, 100, 0, 10, "hM_PtMbin_");
+  createNMbins(mBinsPtEta, mH_M_PtEta, 100, 0, 10, "hM_PtEtabin_");
+  createNMbins(mBinsMEta, mH_M_MEta, 100, 0, 10, "hM_MEtabin_");
+  createNMbins(mBinsPtM, mH_Eta_PtM, 100, -5, 5, "hEta_PtMbin_");
+  createNMbins(mBinsPtEta, mH_Eta_PtEta, 100, -5, 5, "hEta_PtEtabin_");
+  createNMbins(mBinsMEta, mH_Eta_MEta, 100, -5, 5, "hEta_MEtabin_");
   
   createNMbins(mBinsPtM, mH_ProcIds_PtM_pyth, 100, 0, 100, "hProcIds_pyth_PtMbin_");
   createNMbins(mBinsPtEta, mH_ProcIds_PtEta_pyth, 100, 0, 100, "hProcIds_pyth_PtEtabin_");
@@ -237,17 +327,74 @@ void embedAnalMaker::initializeHistograms(){
   createNMbins(mBinsPtM, mH_matchedPdgCode_PtM_pyth, 2000, -999, 1001, "hMatchedPdgCode_pyth_PtMbin_");
   createNMbins(mBinsPtEta, mH_matchedPdgCode_PtEta_pyth, 2000, -999, 1001, "hMatchedPdgCode_pyth_PtEtabin_");
   createNMbins(mBinsMEta, mH_matchedPdgCode_MEta_pyth, 2000, -999, 1001, "hMatchedPdgCode_pyth_MEtabin_");  
+  createNMbins(mBinsPtM, mH_Pt_PtM_pyth, 500, 0, 50, "hPt_pyth_PtMbin_");
+  createNMbins(mBinsPtEta, mH_Pt_PtEta_pyth, 500, 0, 50, "hPt_pyth_PtEtabin_");
+  createNMbins(mBinsMEta, mH_Pt_MEta_pyth, 500, 0, 50, "hPt_pyth_MEtabin_");
+  createNMbins(mBinsPtM, mH_M_PtM_pyth, 100, 0, 10, "hM_pyth_PtMbin_");
+  createNMbins(mBinsPtEta, mH_M_PtEta_pyth, 100, 0, 10, "hM_pyth_PtEtabin_");
+  createNMbins(mBinsMEta, mH_M_MEta_pyth, 100, 0, 10, "hM_pyth_MEtabin_");
+  createNMbins(mBinsPtM, mH_Eta_PtM_pyth, 100, -5, 5, "hEta_pyth_PtMbin_");
+  createNMbins(mBinsPtEta, mH_Eta_PtEta_pyth, 100, -5, 5, "hEta_pyth_PtEtabin_");
+  createNMbins(mBinsMEta, mH_Eta_MEta_pyth, 100, -5, 5, "hEta_pyth_MEtabin_");
+  
   
     
   mH_PairPt   = new TH1D("hPairPt","hPairPt",300,0,30);
-  mH_PairEta  = new TH1D("hPairEta","hPairEta",200,-2,2);
+  mH_PairEta  = new TH1D("hPairEta","hPairEta",200,-3,3);
   mH_PairPhi  = new TH1D("hPairPhi","hPairPhi",200,-3.14159,3.14159);
   mH_PairMass = new TH1D("hPairMass","hPairMass",250,0,5); 
+  mH_PairPt->Sumw2();
+  mH_PairEta->Sumw2();
+  mH_PairPhi->Sumw2();
+  mH_PairMass->Sumw2();
   
   mH_PairPt_pyth   = new TH1D("hPairPt_pyth","hPairPt_pyth",300,0,30);
   mH_PairEta_pyth  = new TH1D("hPairEta_pyth","hPairEta_pyth",200,-2,2);
   mH_PairPhi_pyth  = new TH1D("hPairPhi_pyth","hPairPhi_pyth",200,-3.14159,3.14159);
   mH_PairMass_pyth = new TH1D("hPairMass_pyth","hPairMass_pyth",250,0,5); 
+  mH_PairPt_pyth->Sumw2();
+  mH_PairEta_pyth->Sumw2();
+  mH_PairPhi_pyth->Sumw2();
+  mH_PairMass_pyth->Sumw2();
+  
+  mH_EtaPlus = new TH1D("hEtaPlus","hEtaPlus",200,-2,2);
+  mH_EtaMinus = new TH1D("hEtaMinus","hEtaMinus",200,-2,2);
+  mH_EtaJP0 = new TH1D("hEtaJP0","hEtaJP0",200,-2,2);
+  mH_EtaJP1 = new TH1D("hEtaJP1","hEtaJP1",200,-2,2);
+  mH_EtaJP2 = new TH1D("hEtaJP2","hEtaJP2",200,-2,2);
+  mH_EtaBeforePair = new TH1D("hEtaBeforePair","hEtaBeforePair",200,-2,2);
+  mH_EtaBeforeTrig = new TH1D("hEtaBeforeTrig","hEtaBeforeTrig",200,-2,2);
+  mH_EtaNoCuts = new TH1D("hEtaNoCuts","hEtaNoCuts",200,-2,2);
+  mH_EtaNSigPiCut = new TH1D("hEtaNSigPiCut","hEtaNSigPiCut",200,-2,2);
+  mH_EtaPlus->Sumw2();
+  mH_EtaMinus->Sumw2();
+  mH_EtaBeforePair->Sumw2();
+  mH_EtaBeforeTrig->Sumw2();
+  mH_EtaNoCuts->Sumw2();
+  mH_EtaNSigPiCut->Sumw2();
+  
+  mH_PairPtJP0 = new TH1D("hPairPt_JP0","hPairPt_JP0", 300,0,30);
+  mH_PairPtJP1 = new TH1D("hPairPt_JP1","hPairPt_JP1", 300,0,30);
+  mH_PairPtJP2 = new TH1D("hPairPt_JP2","hPairPt_JP2", 300,0,30);
+  mH_TrackPtJP0 = new TH1D("hTrackPt_JP0","hTrackPt_JP0", 300,0,30);
+  mH_TrackPtJP1 = new TH1D("hTrackPt_JP1","hTrackPt_JP1", 300,0,30);
+  mH_TrackPtJP2 = new TH1D("hTrackPt_JP2","hTrackPt_JP2", 300,0,30);
+  
+  mH_PairPtBHT0VPD = new TH1D("hPairPt_BHT0VPD","hPairPt_BHT0VPD", 300,0,30);
+  mH_PairPtBHT1VPD = new TH1D("hPairPt_BHT1VPD","hPairPt_BHT1VPD", 300,0,30);
+  mH_PairPtBHT2BBC = new TH1D("hPairPt_BHT2BBD","hPairPt_BHT2BBD", 300,0,30);
+  mH_PairPtBHT2    = new TH1D("hPairPt_BHT2","hPairPt_BHT2", 300,0,30);
+  
+  
+
+  
+
+  mH_triggerCounts = new TH1D("hTriggerCounts","hTriggerCounts",201,370500,370700);
+  
+  double bins[] = {0,1,6.24449,26.1211,157.486,670.181,894.384,3808.84,23439,27471.4,113127,198982,198983};
+
+  mH_BinWeight = new TH1D("hBinWeight","hBinWeight",12,bins);
+
 }
 
 void embedAnalMaker::createNMbins(binInfo bins, vector<vector<TH1D*> >& histMatrix, int histbins, double histmin, double histmax, string name){
@@ -296,7 +443,7 @@ void embedAnalMaker::fillNMbin(binInfo bins, std::vector<std::vector<TH1D*> >& h
   int zBin = binarySearch(zval, bins.nz, bins.zlims);
   
   if (yBin != -1 && zBin != -1){                             // -1 is return value of binarySearch when yval or zval is not in range
-    histMatrix[yBin][zBin]->Fill(fillval, mBinWeight);
+    histMatrix[yBin][zBin]->Fill(fillval, mBinWeight*mTrigWeight);
     //cout << "filled hist " << histMatrix[yBin][zBin]->GetName() << endl;
   }
 }
@@ -360,21 +507,39 @@ bool embedAnalMaker::lowestPossibleDivision(int lowLimit, int highLimit){
 	else return false;
 }
 
-bool embedAnalMaker::checkForTriggers(StMuDst* muDst){
+bool embedAnalMaker::checkForTriggers(){
   
   bool triggerFired = false;
   bool printTrigs   = false;
   
-  assert(mTrgSimMkr);
-    
-  vector<int> trigvector = mTrgSimMkr->triggerIds();
-	
   if (printTrigs){
+    assert(mTrgSimMkr);    
+    vector<int> trigvector = mTrgSimMkr->triggerIds();
     for (int j = 0; j<trigvector.size(); j++)
       cout << "trigger keith" << trigvector[j] << endl;
   }
-	
-  //JP0,JP1,JP2,AJP
+
+  int triggerIds[]     = {370601,370611,370621,370641,370501,370511,370522,370531};
+  //double trigWeights[] = {.0075, .2853, 1, 1, .003, .00105, .006, .0075}; //test last should be .075 also added 0 to .03, .0105, and .06
+  double trigWeights[] = {.0037, .087, 1, 1, .00026, .00087, .00556, .0070};
+  double hiTrigWeight  = 0;
+  
+  for (int i=0; i<8; i++)
+  {
+    if (didTrigFire(triggerIds[i]))                 //bin 102 = JP0     bin 112 = JP1 ...
+    {                                               //bin 002 = BHT0VPD bin 012 = BHT1VPD... 
+      triggerFired = true;
+      if (trigWeights[i] > hiTrigWeight)
+        hiTrigWeight = trigWeights[i];
+      
+      mH_triggerCounts->Fill(triggerIds[i], mBinWeight);
+    }
+  }
+  mTrigWeight = hiTrigWeight;
+
+  
+	/*
+   //JP0,JP1,JP2,AJP
   if (mTrgSimMkr->isTrigger(370601) || mTrgSimMkr->isTrigger(370611) || mTrgSimMkr->isTrigger(370621) || mTrgSimMkr->isTrigger(370641))
     triggerFired = true;
 
@@ -390,6 +555,27 @@ bool embedAnalMaker::checkForTriggers(StMuDst* muDst){
   
   return triggerFired;
 }
+
+int embedAnalMaker::hiJPFired(){
+  
+  int hiJP = -1;
+  if (didTrigFire(370601)){hiJP = 0;}
+  if (didTrigFire(370611)){hiJP = 1;}
+  if (didTrigFire(370621)){hiJP = 2;}
+  //if (didTrigFire(370641)){hiJP = 4;}
+  
+  return hiJP;
+}
+
+bool embedAnalMaker::didTrigFire(int trigID){
+  assert(mTrgSimMkr);
+  vector<int> trigvector = mTrgSimMkr->triggerIds();
+  if (mTrgSimMkr->isTrigger(trigID))
+    return true;
+  else
+    return false;
+}
+
 
 int embedAnalMaker::findHighestRankingVertex(StMuDst* muDst){
   
@@ -412,6 +598,7 @@ int embedAnalMaker::findHighestRankingVertex(StMuDst* muDst){
     }
   }
   if (vertexFound) return highRankId;
+  else return -1;
 }
 
 StMuTrack* embedAnalMaker::findTrack(StMuDst* muDst, int trackId, int vertexId){
@@ -419,19 +606,32 @@ StMuTrack* embedAnalMaker::findTrack(StMuDst* muDst, int trackId, int vertexId){
   StMuTrack* track = muDst->primaryTracks(trackId);
   if (track->vertexIndex() == vertexId                      && 
       track->nSigmaPion() > -1 && track->nSigmaPion() < 2.5 &&
-      track->nHitsFit()/track->nHitsPoss() >- 0.5           &&
+      track->nHitsFit() >= 5                                &&
+      (double)track->nHitsFit()/track->nHitsPoss() >= 0.5   &&
       track->pt() > 1.5 && fabs(track->eta()) < 2              )
   {
     return track;
   }
 }
 
+bool embedAnalMaker::trackPassesCuts(StMuTrack* track){
+  
+  if (track->nSigmaPion() > -1 && track->nSigmaPion() < 2.5 &&
+      track->nHitsFit() >= 5                                &&
+      (double)track->nHitsFit()/track->nHitsPoss() >= 0.5   &&
+      track->pt() > 1.5 && fabs(track->eta()) < 2              )
+  {
+    return true;
+  }
+  else return false;
+}
+
+
 bool embedAnalMaker::checkTracksForPair(StMuTrack* track1, StMuTrack* track2){
   
   double minRad = 0.05;
   double maxRad = 0.7;
-  
-  if (track1->charge() != -1*track2->charge()) return false;
+  if (track1->charge() != -1*track2->charge() || abs(track1->charge()) != 1) return false;
   else{
     double radius = getRadius(track1, track2);
     if (radius >= minRad && radius < maxRad) return true;
@@ -441,33 +641,23 @@ bool embedAnalMaker::checkTracksForPair(StMuTrack* track1, StMuTrack* track2){
 
 double embedAnalMaker::getRadius(StMuTrack* track1, StMuTrack* track2){
  
-  assert(track1->charge() == -1*track2->charge());
-  
-  StMuTrack* plus;
-  StMuTrack* minus;
-  
-  if (track1->charge() == 1 && track2->charge() == -1){
-    plus  = track1;
-    minus = track2;
-  }
-  else{
-    plus  = track2;
-    minus = track1;
-  }
-
   double pi = 3.14159265359;
   double radius;
   double radius_patch = 100; //must start with radius_patch higher than radius could be
 
-  radius = sqrt( pow(plus->eta() - minus->eta(), 2) + pow(plus->phi() - minus->phi(), 2) );
+  radius = sqrt( pow(track1->eta() - track2->eta(), 2) + pow(track1->phi() - track2->phi(), 2) );
   
-  if (plus->phi() < 0 && minus->phi() > 0){
-    radius_patch = sqrt( pow(plus->eta() - minus->eta(), 2) + pow(2.0*pi+plus->phi() - minus->phi(), 2) );
+  if (track1->phi() < 0 && track2->phi() > 0){
+    radius_patch = sqrt( pow(track1->eta() - track2->eta(), 2) + pow(2.0*pi+track1->phi() - track2->phi(), 2) );
   }
-  if (plus->phi() > 0 && minus->phi() < 0){
-    radius_patch = sqrt( pow(plus->eta() - minus->eta(), 2) + pow(plus->phi() - (2.0*pi+minus->phi()) , 2) );
+  if (track1->phi() > 0 && track2->phi() < 0){
+    radius_patch = sqrt( pow(track1->eta() - track2->eta(), 2) + pow(track1->phi() - (2.0*pi+track2->phi()) , 2) );
   }
   radius = min(radius, radius_patch);
+  /*std::cout << "RADIUS = " << radius << std::endl;
+  std::cout << "track1 eta = " << track1->eta() << "  track1 phi = " << track1->phi() << std::endl;
+  std::cout << "track2 eta = " << track2->eta() << "  track2 phi = " << track2->phi() << std::endl;
+  */
   return radius;
 }
 
@@ -555,9 +745,18 @@ TLorentzVector embedAnalMaker::getSumLV(const TParticle* particle1, const TParti
 
 void embedAnalMaker::findWeight(){
  
+  //new numbers from final embedding production
+  Double_t crossSection[11] = {9.02,1.46190741962,0.354435406463,0.151376021766,0.0248864431931,0.00584584639797,0.00230488048286,0.000342661826285,4.56298753316e-05,9.73804408739e-06,5.01997717424e-07};
+  Double_t numEvents[11]    = {2100295.0,600300.0,600300.0,300289.0,300289.0,300289.0,160295.0,100302.0,80293.0,76303.0,23307.0};
+  Int_t    binEdges[12]     = {2,3,4,5,7,9,11,15,20,25,35,1000};
+
+  
+  //old numbers from test embedding production
+  /*
   Double_t crossSection[11] = {9.02,1.466,3.56E-1,1.52E-1,2.47E-2,5.8E-3,2.32E-3,3.41E-4,4.53E-5,1.029E-5,5.04E-7};
   Double_t numEvents[11]    = {54055,15453,15453,7733,7733,7733,4128,2582,2068,1965,601};
   Int_t    binEdges[12]     = {2,3,4,5,7,9,11,15,20,25,35,1000};
+   */
   
   int    bin;
   double binLumi; 
@@ -570,6 +769,7 @@ void embedAnalMaker::findWeight(){
   
   binLumi    = (numEvents[bin]*crossSection[10])/(crossSection[bin]*numEvents[10]); // Weight normalized to Kevin's highest bin
   mBinWeight = 1.0/binLumi;
+  mH_BinWeight->Fill(mBinWeight);
 
 }
 
@@ -827,44 +1027,138 @@ Int_t embedAnalMaker::Make(){
   int proccessId = getProccessId(eventId, mPythEvent);
   getPartonMomenta();
   
-  //dectector level
-  if (checkForTriggers(muDst))
+  /*-------------------------------------*
+  //Some histograms for testing
+  int vertexId = -100;
+  vertexId = findHighestRankingVertex(muDst);
+  for (int i = 0; i<muDst->numberOfPrimaryTracks(); i++)
   {
-    int vertexId = -100;
-    vertexId = findHighestRankingVertex(muDst);
-    if (vertexId < 0) return kStOK; // no viable vertex in this event
-
-    for (int i = 0; i<muDst->numberOfPrimaryTracks() - 1; i++)
+    StMuTrack* trackNoCuts = muDst->primaryTracks(i);
+    mH_EtaNoCuts->Fill(trackNoCuts->eta(),mBinWeight);
+    
+    if (vertexId > -1) // no viable vertex in this event    
     {
-      StMuTrack* track1 = findTrack(muDst, i, vertexId);
-      if (!track1) continue;
-      
-      for (int j = i+1; j<muDst->numberOfPrimaryTracks(); j++) //don't double count
+      StMuTrack* track = findTrack(muDst, i, vertexId);
+      if (!track) continue;
+      //mH_EtaNSigPiCut->Fill(track->eta(), mBinWeight);
+      mH_EtaBeforeTrig->Fill(track->eta(), mBinWeight);
+    }
+  }
+  /*-------------------------------------*/
+    
+    
+  
+  //dectector level
+  if (checkForTriggers())
+  {
+    int vertexId = findHighestRankingVertex(muDst);
+    if (vertexId > -1) // no viable vertex in this event if vert id <= -1
+    {
+      for (int i = 0; i<muDst->numberOfPrimaryTracks() - 1; i++)
       {
-        StMuTrack* track2 = findTrack(muDst, j, vertexId); 
-        if (!track2) continue;
-        
-        if (checkTracksForPair(track1, track2))
+        StMuTrack* track1 = findTrack(muDst, i, vertexId);
+        if(!track1) continue;
+        mH_EtaBeforePair->Fill(track1->eta(), mBinWeight*mTrigWeight);
+        for (int j = i+1; j<muDst->numberOfPrimaryTracks(); j++) //don't double count
         {
-          TLorentzVector sum = getSumLV(track1, track2);
-          
-          const TParticle* matchedParton = matchPairToParton(sum);
-          double Z = getZValue(sum, matchedParton);
-          //printHardScatScenario();
-          double d_nn = getSpinTransFactor(matchedParton, sum);
-          
-          mMatchedPdgCode_total->Fill(matchedParton->GetPdgCode());
-          fillAllHistograms(sum, proccessId, "procId", "detector");
-          fillAllHistograms(sum, X1, "X1", "detector");
-          fillAllHistograms(sum, X2, "X2", "detector");
-          fillAllHistograms(sum, Z, "Z", "detector");
-          fillAllHistograms(sum, matchedParton->GetPdgCode(), "matchedPdgCode", "detector");
-        }
+          StMuTrack* track2 = findTrack(muDst, j, vertexId); 
+          if (!track2) continue;
+          if (j == muDst->numberOfPrimaryTracks() - 1){mH_EtaBeforePair->Fill(track2->eta(), mBinWeight*mTrigWeight);}
+          if (checkTracksForPair(track1, track2))
+          {
+            TLorentzVector sum = getSumLV(track1, track2);
+            
+            const TParticle* matchedParton = matchPairToParton(sum);
+            double Z = getZValue(sum, matchedParton);
+            //printHardScatScenario();
+            double d_nn = getSpinTransFactor(matchedParton, sum);
+            
+            mMatchedPdgCode_total->Fill(matchedParton->GetPdgCode(), mBinWeight*mTrigWeight);
+            fillAllHistograms(sum, proccessId, "procId", "detector");
+            fillAllHistograms(sum, X1, "X1", "detector");
+            fillAllHistograms(sum, X2, "X2", "detector");
+            fillAllHistograms(sum, Z, "Z", "detector");
+            fillAllHistograms(sum, matchedParton->GetPdgCode(), "matchedPdgCode", "detector");
+            fillAllHistograms(sum, sum.Pt(), "Pt", "detector");
+            fillAllHistograms(sum, sum.M(), "Mass", "detector");
+            fillAllHistograms(sum, sum.Eta(), "Eta", "detector");
+            
+            
+            /*-------------------------------------*/
+            //OTHER Histograms for testing..........
+            StMuTrack* plus;
+            StMuTrack* minus;
+            
+            if (track1->charge() == 1 && track2->charge() == -1){
+              plus  = track1;
+              minus = track2;
+            }
+            else{
+              plus  = track2;
+              minus = track1;
+            }
+            
+            mH_EtaPlus->Fill(plus->eta(), mBinWeight*mTrigWeight);
+            mH_EtaMinus->Fill(minus->eta(), mBinWeight*mTrigWeight);
+            
+            int hiJP = hiJPFired();
+            if (hiJP == 0)
+            {
+              mH_PairPtJP0->Fill(sum.Pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP0->Fill(track1->pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP0->Fill(track2->pt(), mBinWeight*mTrigWeight);
+              mH_EtaJP0->Fill(track1->eta(), mBinWeight*mTrigWeight);
+              mH_EtaJP0->Fill(track2->eta(), mBinWeight*mTrigWeight);
+              //cout << mTrigWeight << endl;
+
+            }
+            if (hiJP == 1)
+            {
+              mH_PairPtJP1->Fill(sum.Pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP1->Fill(track1->pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP1->Fill(track2->pt(), mBinWeight*mTrigWeight);
+              mH_EtaJP1->Fill(track1->eta(), mBinWeight*mTrigWeight);
+              mH_EtaJP1->Fill(track2->eta(), mBinWeight*mTrigWeight);
+              //cout << mTrigWeight << endl;
+
+            }
+            if (hiJP == 2)
+            {
+              mH_PairPtJP2->Fill(sum.Pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP2->Fill(track1->pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP2->Fill(track2->pt(), mBinWeight*mTrigWeight);
+              mH_EtaJP2->Fill(track1->eta(), mBinWeight*mTrigWeight);
+              mH_EtaJP2->Fill(track2->eta(), mBinWeight*mTrigWeight);
+              //cout << mTrigWeight << endl;
+
+            }
+            if (hiJP == 4) //group jp2 and ajp??
+            {
+              mH_PairPtJP2->Fill(sum.Pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP2->Fill(track1->pt(), mBinWeight*mTrigWeight);
+              mH_TrackPtJP2->Fill(track2->pt(), mBinWeight*mTrigWeight);
+              mH_EtaJP2->Fill(track1->eta(), mBinWeight*mTrigWeight);
+              mH_EtaJP2->Fill(track2->eta(), mBinWeight*mTrigWeight);
+              cout << mTrigWeight << endl;
+
+            }
+            
+            
+            if (didTrigFire(370501)){mH_PairPtBHT0VPD->Fill(sum.Pt(),mBinWeight*mTrigWeight);}
+            if (didTrigFire(370511)){mH_PairPtBHT1VPD->Fill(sum.Pt(),mBinWeight*mTrigWeight);}
+            if (didTrigFire(370522)){mH_PairPtBHT2BBC->Fill(sum.Pt(),mBinWeight*mTrigWeight);}
+            if (didTrigFire(370531)){mH_PairPtBHT2->Fill(sum.Pt(),mBinWeight*mTrigWeight);}
+
+            /*-------------------------------------*/
+            
+          }
+        }//end vertex
       }//end j
     }//end i
   }//end detector level
 
   //pythia level
+  mTrigWeight = 1; //Need to set trigweight to 1 because detector is no longer involved
   for (int i=0; i<mPythEvent->particles()->GetEntries(); i++)
   {
     const TParticle* piPlus = findPythParticle(mPythEvent,i);
@@ -884,18 +1178,20 @@ Int_t embedAnalMaker::Make(){
         //printHardScatScenario();
         double d_nn = getSpinTransFactor(matchedParton, sum);
 
-        mMatchedPdgCode_total_pyth->Fill(matchedParton->GetPdgCode());
+        mMatchedPdgCode_total_pyth->Fill(matchedParton->GetPdgCode(),mBinWeight);
         fillAllHistograms(sum, proccessId, "procId", "pythia");
         fillAllHistograms(sum, X1, "X1", "pythia");
         fillAllHistograms(sum, X2, "X2", "pythia");  
         fillAllHistograms(sum, Z, "Z", "pythia");
         fillAllHistograms(sum, matchedParton->GetPdgCode(), "matchedPdgCode", "pythia");
+        fillAllHistograms(sum, sum.Pt(), "Pt", "pythia");
+        fillAllHistograms(sum, sum.M(), "Mass", "pythia");
+        fillAllHistograms(sum, sum.Eta(), "Eta", "pythia");        
       }
     }//end j
   }//end i
   iEntry++;
   return kStOK;
-
 }
 
 
